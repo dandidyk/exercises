@@ -29,12 +29,17 @@ function map(array, fn) {
  Напишите аналог встроенного метода reduce для работы с массивами
  */
 function reduce(array, fn, initial) {
-		let res = initial;
-	for (let i = 0; i<array.length; i++) {
-		if (res === undefined) { 
-          res = array[0];
-          continue
-        }
+		var res = 0;
+    let index;
+    if(initial == undefined) {
+        res = array[0];
+        index = 1;
+    } else {
+      res = initial;
+      index = 0;
+    }
+
+	for (let i = index; i<array.length; i++) {
 		res = fn(res,array[i],i,array);
 	}
 
@@ -100,18 +105,33 @@ function upperProps(obj) {
  Задача 8 *:
  Напишите аналог встроенного метода slice для работы с массивами
  */
-function slice(array, from, to) {
+function slice(array, from = 0, to) {
+    let arr = [];
+
+
+    if(to == undefined) {
+      to = array.length;
+    }
     if(to> array.length) {
       to = array.length }
-    if(from< 0) {
-      return [] }
-    let arr = [];
-  for (let i = 0; from<to; i++) {
-      arr[i] = array[from];
-      from++
-  }
+    if(to< 0) {
+      to = array.length + to;
+    }
+    
+    if(from < 0) {
+      from = array.length + from
+    }
+
+    if (from < 0) {
+      from = 0;
+    }
+    for(let i = from; i<to; i++) {
+       arr.push(array[i])
+    }
   return arr
 }
+
+
 
 /*
  Задача 9 *:
@@ -122,7 +142,7 @@ function slice(array, from, to) {
 function createProxy(obj) {
   var handler = {
     set: function (ob, prop, value) {
-      ob[prop] =  value*value
+      return ob[prop] =  value*value
     }
   }
 
